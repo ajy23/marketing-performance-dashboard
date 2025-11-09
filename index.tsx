@@ -459,7 +459,7 @@ const CMODashboard = ({ data, colors }) => {
                                     backgroundColor: sortedByRevenue.map(c => colors[c.channel]),
                                 }]
                             }}
-                            options={{...chartOptions, indexAxis: 'y'}} />
+                            options={{...chartOptions, indexAxis: 'y', plugins: { legend: { display: false } } }} />
                     </div>
                 </div>
                 <div className="chart-card">
@@ -474,7 +474,7 @@ const CMODashboard = ({ data, colors }) => {
                                     backgroundColor: sortedByImpressions.map(c => colors[c.channel]),
                                 }]
                             }}
-                            options={chartOptions} />
+                            options={{...chartOptions, plugins: { legend: { display: false } } }} />
                     </div>
                 </div>
                 <div className="chart-card">
@@ -488,7 +488,7 @@ const CMODashboard = ({ data, colors }) => {
                                     backgroundColor: [colors.NewCustomer, colors.ReturningCustomer],
                                 }]
                             }}
-                            options={{...chartOptions, scales: {}}} />
+                            options={{...chartOptions, scales: {}, plugins: { legend: { display: false } } }} />
                     </div>
                 </div>
                  <div className="chart-card">
@@ -503,7 +503,7 @@ const CMODashboard = ({ data, colors }) => {
                                     backgroundColor: sortedByCTR.map(c => colors[c.channel]),
                                 }]
                             }}
-                            options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: formatPercentage } } } }} />
+                            options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: formatPercentage } } }, plugins: { legend: { display: false } } }} />
                     </div>
                 </div>
                 <div className="chart-card">
@@ -518,7 +518,7 @@ const CMODashboard = ({ data, colors }) => {
                                     backgroundColor: sortedByCVR.map(c => colors[c.channel]),
                                 }]
                             }}
-                           options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: formatPercentage } } } }} />
+                           options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: formatPercentage } } }, plugins: { legend: { display: false } } }} />
                     </div>
                 </div>
             </div>
@@ -539,6 +539,15 @@ const CFODashboard = ({ data, colors }) => {
     const sortedByCPA = [...channelTotals].sort((a, b) => (a.Spend / a.Conversions || Infinity) - (b.Spend / b.Conversions || Infinity));
 
     const chartOptions = {
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+        },
+    };
+    
+    const chartOptionsWithLegend = {
         maintainAspectRatio: false,
         plugins: { legend: { labels: { color: '#94a3b8' } } },
         scales: {
@@ -567,7 +576,7 @@ const CFODashboard = ({ data, colors }) => {
                                     { label: 'Actual Spend', data: filteredFinanceData.map(d => d.Actual_Spend), borderColor: colors.Spend, tension: 0.1, fill: false }
                                 ]
                             }}
-                            options={chartOptions} />
+                            options={chartOptionsWithLegend} />
                     </div>
                 </div>
                 <div className="chart-card">
@@ -582,7 +591,7 @@ const CFODashboard = ({ data, colors }) => {
                                     backgroundColor: sortedByROAS.map(c => colors[c.channel]),
                                 }]
                             }}
-                            options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: (value) => formatRatio(value) + 'x' } } } }}/>
+                            options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: (value) => formatRatio(value) + 'x' } } }, plugins: { legend: { display: false } } }}/>
                     </div>
                 </div>
                 <div className="chart-card">
@@ -597,7 +606,7 @@ const CFODashboard = ({ data, colors }) => {
                                     backgroundColor: sortedByCPA.map(c => colors[c.channel]),
                                 }]
                             }}
-                           options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: (value) => formatCurrency(value) } } } }} />
+                           options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: (value) => formatCurrency(value) } } }, plugins: { legend: { display: false } } }} />
                     </div>
                 </div>
                  <div className="chart-card" style={{gridColumn: '1 / -1'}}>
@@ -614,7 +623,7 @@ const CFODashboard = ({ data, colors }) => {
                                     fill: false
                                 }]
                             }}
-                            options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: (value) => formatRatio(value) + 'x' } } } }}/>
+                            options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: (value) => formatRatio(value) + 'x' } } }, plugins: { legend: { display: false } } }}/>
                     </div>
                 </div>
             </div>
