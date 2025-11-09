@@ -735,7 +735,12 @@ const CMODashboard = ({ data, colors, theme }) => {
             </div>
             <div className="chart-grid">
                 <div className="chart-card" style={{gridColumn: '1 / -1'}}>
-                    <h3>Revenue by Channel</h3>
+                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
+                        <h3>Revenue by Channel</h3>
+                        <div style={{fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)'}}>
+                            {formatCurrency(overallTotals.Revenue)}
+                        </div>
+                    </div>
                     <div style={{height: '350px'}}>
                         <Chart type="bar"
                             data={{
