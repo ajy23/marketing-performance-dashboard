@@ -188,7 +188,7 @@ const Filters = ({ options, selected, onChange }) => {
     );
 };
 
-const Header = ({ view, setView }) => (
+const Header = ({ view, setView, theme, toggleTheme }) => (
     <header className="app-header">
         <div className="logo-container">
             <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -198,9 +198,30 @@ const Header = ({ view, setView }) => (
             </svg>
             <h1>Marketing Performance</h1>
         </div>
-        <div className="toggle-switch">
-            <button className={view === 'CMO' ? 'active' : ''} onClick={() => setView('CMO')}>CMO View</button>
-            <button className={view === 'CFO' ? 'active' : ''} onClick={() => setView('CFO')}>CFO View</button>
+        <div className="header-controls">
+            <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+                {theme === 'dark' ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                )}
+            </button>
+            <div className="toggle-switch">
+                <button className={view === 'CMO' ? 'active' : ''} onClick={() => setView('CMO')}>CMO View</button>
+                <button className={view === 'CFO' ? 'active' : ''} onClick={() => setView('CFO')}>CFO View</button>
+            </div>
         </div>
     </header>
 );
@@ -214,6 +235,19 @@ const Footer = () => (
 const App = () => {
     const [view, setView] = useState('CMO');
     const [filters, setFilters] = useState(null);
+    const [theme, setTheme] = useState(() => {
+        const savedTheme = localStorage.getItem('theme');
+        return savedTheme || 'dark';
+    });
+
+    useEffect(() => {
+        document.body.className = theme;
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    };
 
     const financeData = useMemo(() => parseCSV(financeCSV).sort((a, b) => new Date(a.Month).getTime() - new Date(b.Month).getTime()), []);
     const channelData = useMemo(() => parseCSV(channelCSV), []);
@@ -342,49 +376,77 @@ const App = () => {
     return (
         <>
             <style>{`
+                :root {
+                    --bg-primary: #0f172a;
+                    --bg-secondary: #1e293b;
+                    --bg-tertiary: #334155;
+                    --bg-hover: #334155;
+                    --text-primary: #f8fafc;
+                    --text-secondary: #94a3b8;
+                    --text-tertiary: #64748b;
+                    --border-color: #334155;
+                    --border-hover: #475569;
+                    --shadow: rgba(0,0,0,0.15);
+                }
+                .light {
+                    --bg-primary: #ffffff;
+                    --bg-secondary: #f8fafc;
+                    --bg-tertiary: #e2e8f0;
+                    --bg-hover: #e2e8f0;
+                    --text-primary: #0f172a;
+                    --text-secondary: #475569;
+                    --text-tertiary: #64748b;
+                    --border-color: #e2e8f0;
+                    --border-hover: #cbd5e1;
+                    --shadow: rgba(0,0,0,0.1);
+                }
+                body { background-color: var(--bg-primary); color: var(--text-primary); transition: background-color 0.3s ease, color 0.3s ease; }
                 .app-main { padding: 1.5rem; flex-grow: 1; }
                 .dashboard-container { max-width: 1400px; margin: auto; }
-                .app-header { background-color: #1e293b; padding: 1rem 1.5rem; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+                .app-header { background-color: var(--bg-secondary); padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; transition: background-color 0.3s ease, border-color 0.3s ease; }
                 .logo-container { display: flex; align-items: center; gap: 0.75rem; }
-                .logo-container h1 { font-size: 1.5rem; color: #f8fafc; margin: 0; }
-                .app-footer { text-align: center; padding: 1.5rem; font-size: 0.875rem; color: #64748b; background-color: #0f172a; margin-top: auto; }
-                .toggle-switch { display: flex; background-color: #1e293b; border-radius: 999px; padding: 4px; }
-                .toggle-switch button { font-size: 0.875rem; font-weight: 600; padding: 0.5rem 1.5rem; border: none; background-color: transparent; color: #94a3b8; border-radius: 999px; cursor: pointer; transition: all 0.2s ease-in-out; }
-                .toggle-switch button.active { background-color: #334155; color: #f8fafc; }
+                .logo-container h1 { font-size: 1.5rem; color: var(--text-primary); margin: 0; transition: color 0.3s ease; }
+                .app-footer { text-align: center; padding: 1.5rem; font-size: 0.875rem; color: var(--text-tertiary); background-color: var(--bg-primary); margin-top: auto; transition: background-color 0.3s ease, color 0.3s ease; }
+                .header-controls { display: flex; align-items: center; gap: 1rem; }
+                .theme-toggle { background-color: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 0.5rem; border-radius: 0.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease-in-out; }
+                .theme-toggle:hover { background-color: var(--bg-hover); color: var(--text-primary); transform: scale(1.05); }
+                .toggle-switch { display: flex; background-color: var(--bg-tertiary); border-radius: 999px; padding: 4px; }
+                .toggle-switch button { font-size: 0.875rem; font-weight: 600; padding: 0.5rem 1.5rem; border: none; background-color: transparent; color: var(--text-secondary); border-radius: 999px; cursor: pointer; transition: all 0.2s ease-in-out; }
+                .toggle-switch button.active { background-color: var(--bg-hover); color: var(--text-primary); }
                 .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-                .kpi-card { background-color: #1e293b; padding: 1.5rem; border-radius: 0.75rem; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
-                .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-                .kpi-card h3 { margin: 0 0 0.5rem 0; font-size: 1rem; color: #94a3b8; font-weight: 500; }
-                .kpi-card p { margin: 0; font-size: 2.25rem; font-weight: 700; color: #f8fafc; }
+                .kpi-card { background-color: var(--bg-secondary); padding: 1.5rem; border-radius: 0.75rem; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; border: 1px solid var(--border-color); }
+                .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px var(--shadow); }
+                .kpi-card h3 { margin: 0 0 0.5rem 0; font-size: 1rem; color: var(--text-secondary); font-weight: 500; transition: color 0.3s ease; }
+                .kpi-card p { margin: 0; font-size: 2.25rem; font-weight: 700; color: var(--text-primary); transition: color 0.3s ease; }
                 .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; }
-                .chart-card { background-color: #1e293b; padding: 1.5rem; border-radius: 0.75rem; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
-                .chart-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-                .chart-card h3 { margin: 0 0 1.5rem 0; font-size: 1.25rem; font-weight: 600; color: #f1f5f9; }
-                .no-data { text-align: center; padding: 3rem; color: #94a3b8; font-size: 1.25rem; grid-column: 1 / -1; }
+                .chart-card { background-color: var(--bg-secondary); padding: 1.5rem; border-radius: 0.75rem; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; border: 1px solid var(--border-color); }
+                .chart-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px var(--shadow); }
+                .chart-card h3 { margin: 0 0 1.5rem 0; font-size: 1.25rem; font-weight: 600; color: var(--text-primary); transition: color 0.3s ease; }
+                .no-data { text-align: center; padding: 3rem; color: var(--text-secondary); font-size: 1.25rem; grid-column: 1 / -1; }
                 .filters-wrapper { margin-bottom: 2rem; }
-                .filter-toggle { display: flex; align-items: center; gap: 0.5rem; background-color: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; }
-                .filter-toggle:hover { background-color: #334155; color: #f1f5f9; }
-                .filters-container { display: flex; flex-wrap: wrap; gap: 1.5rem; background-color: #1e293b; border-radius: 0.75rem; max-height: 0; overflow: hidden; padding: 0 1.5rem; margin-top: 0; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid transparent; }
-                .filters-container.open { max-height: 600px; padding: 1.5rem; margin-top: 1rem; opacity: 1; border-color: #334155; }
+                .filter-toggle { display: flex; align-items: center; gap: 0.5rem; background-color: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease-in-out; }
+                .filter-toggle:hover { background-color: var(--bg-hover); color: var(--text-primary); }
+                .filters-container { display: flex; flex-wrap: wrap; gap: 1.5rem; background-color: var(--bg-secondary); border-radius: 0.75rem; max-height: 0; overflow: hidden; padding: 0 1.5rem; margin-top: 0; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid transparent; }
+                .filters-container.open { max-height: 600px; padding: 1.5rem; margin-top: 1rem; opacity: 1; border-color: var(--border-color); }
                 .filter-group { flex: 1 1 200px; }
                 .filter-group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-                .filter-group h4 { margin: 0; font-size: 1rem; color: #f1f5f9; }
-                .filter-group-actions button { background: none; border: none; color: #64748b; font-size: 0.75rem; cursor: pointer; padding: 0.25rem; }
-                .filter-group-actions button:hover { color: #94a3b8; }
+                .filter-group h4 { margin: 0; font-size: 1rem; color: var(--text-primary); transition: color 0.3s ease; }
+                .filter-group-actions button { background: none; border: none; color: var(--text-tertiary); font-size: 0.75rem; cursor: pointer; padding: 0.25rem; transition: color 0.2s ease; }
+                .filter-group-actions button:hover { color: var(--text-secondary); }
                 .filter-options { display: flex; flex-wrap: wrap; gap: 0.75rem; max-height: 150px; overflow-y: auto; padding-right: 0.5rem;}
-                .filter-checkbox { display: flex; align-items: center; cursor: pointer; font-size: 0.875rem; color: #cbd5e1; }
+                .filter-checkbox { display: flex; align-items: center; cursor: pointer; font-size: 0.875rem; color: var(--text-secondary); transition: color 0.3s ease; }
                 .filter-checkbox input { display: none; }
                 .filter-checkbox span { position: relative; padding-left: 24px; }
-                .filter-checkbox span::before { content: ''; position: absolute; left: 0; top: 2px; width: 16px; height: 16px; background-color: #334155; border: 1px solid #475569; border-radius: 4px; transition: all 0.2s; }
+                .filter-checkbox span::before { content: ''; position: absolute; left: 0; top: 2px; width: 16px; height: 16px; background-color: var(--bg-tertiary); border: 1px solid var(--border-hover); border-radius: 4px; transition: all 0.2s; }
                 .filter-checkbox input:checked + span::before { background-color: #4f46e5; border-color: #4f46e5; }
                 .filter-checkbox span::after { content: '✓'; position: absolute; left: 3px; top: 1px; color: #fff; opacity: 0; transition: opacity 0.2s; }
                 .filter-checkbox input:checked + span::after { opacity: 1; }
             `}</style>
-            <Header view={view} setView={setView} />
+            <Header view={view} setView={setView} theme={theme} toggleTheme={toggleTheme} />
             <main className="app-main">
                 <div className="dashboard-container">
                     {filters && <Filters options={filterOptions} selected={filters} onChange={handleFilterChange} />}
-                    {view === 'CMO' ? <CMODashboard data={processedData} colors={chartColors} /> : <CFODashboard data={processedData} colors={chartColors} />}
+                    {view === 'CMO' ? <CMODashboard data={processedData} colors={chartColors} theme={theme} /> : <CFODashboard data={processedData} colors={chartColors} theme={theme} />}
                 </div>
             </main>
             <Footer />
@@ -416,7 +478,7 @@ const Chart = ({ type, data, options }) => {
 
 const NoDataMessage = () => <div className="no-data">No data available for the selected filters.</div>;
 
-const CMODashboard = ({ data, colors }) => {
+const CMODashboard = ({ data, colors, theme }) => {
     const { channelTotals, overallTotals } = data;
     
     if (overallTotals.Impressions === 0) return <NoDataMessage />;
@@ -429,12 +491,15 @@ const CMODashboard = ({ data, colors }) => {
     const sortedByCTR = [...channelTotals].sort((a, b) => (b.Clicks / b.Impressions || 0) - (a.Clicks / a.Impressions || 0));
     const sortedByCVR = [...channelTotals].sort((a, b) => (b.Conversions / b.Clicks || 0) - (a.Conversions / a.Clicks || 0));
 
+    const textColor = theme === 'dark' ? '#94a3b8' : '#475569';
+    const gridColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
     const chartOptions = {
         maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        plugins: { legend: { labels: { color: textColor } } },
         scales: {
-            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
-            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+            x: { ticks: { color: textColor }, grid: { color: gridColor } },
+            y: { ticks: { color: textColor }, grid: { color: gridColor } },
         },
     };
 
@@ -526,7 +591,7 @@ const CMODashboard = ({ data, colors }) => {
     );
 };
 
-const CFODashboard = ({ data, colors }) => {
+const CFODashboard = ({ data, colors, theme }) => {
     const { channelTotals, filteredFinanceData, financeTotals, overallTotals } = data;
     
     if (financeTotals.Actual_Spend === 0 && financeTotals.Total_Revenue === 0) return <NoDataMessage />;
@@ -538,21 +603,24 @@ const CFODashboard = ({ data, colors }) => {
     const sortedByROAS = [...channelTotals].sort((a, b) => (b.Revenue / b.Spend || 0) - (a.Revenue / a.Spend || 0));
     const sortedByCPA = [...channelTotals].sort((a, b) => (a.Spend / a.Conversions || Infinity) - (b.Spend / b.Conversions || Infinity));
 
+    const textColor = theme === 'dark' ? '#94a3b8' : '#475569';
+    const gridColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
     const chartOptions = {
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
-            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+            x: { ticks: { color: textColor }, grid: { color: gridColor } },
+            y: { ticks: { color: textColor }, grid: { color: gridColor } },
         },
     };
     
     const chartOptionsWithLegend = {
         maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        plugins: { legend: { labels: { color: textColor } } },
         scales: {
-            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
-            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+            x: { ticks: { color: textColor }, grid: { color: gridColor } },
+            y: { ticks: { color: textColor }, grid: { color: gridColor } },
         },
     };
     

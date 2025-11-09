@@ -17,12 +17,23 @@
         background-color: #0f172a;
         color: #e2e8f0;
       }
+      body.light {
+        background-color: #ffffff;
+        color: #0f172a;
+      }
       #root {
         display: flex;
         flex-direction: column;
         min-height: 100vh;
       }
     </style>
+    <script>
+      // Set initial theme from localStorage
+      (function() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.className = savedTheme;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
