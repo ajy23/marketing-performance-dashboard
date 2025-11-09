@@ -386,12 +386,8 @@ const App = () => {
                     --text-tertiary: #64748b;
                     --border-color: #334155;
                     --border-hover: #475569;
-                    --shadow: rgba(0,0,0,0.15);
-                    --shadow-hover: rgba(0,0,0,0.25);
+                    --shadow: rgba(0,0,0,0.1);
                     --accent: #4f46e5;
-                    --accent-hover: #6366f1;
-                    --gradient-start: rgba(79, 70, 229, 0.1);
-                    --gradient-end: rgba(99, 102, 241, 0.05);
                 }
                 .light {
                     --bg-primary: #ffffff;
@@ -403,40 +399,19 @@ const App = () => {
                     --text-tertiary: #64748b;
                     --border-color: #e2e8f0;
                     --border-hover: #cbd5e1;
-                    --shadow: rgba(0,0,0,0.08);
-                    --shadow-hover: rgba(0,0,0,0.15);
+                    --shadow: rgba(0,0,0,0.05);
                     --accent: #4f46e5;
-                    --accent-hover: #6366f1;
-                    --gradient-start: rgba(79, 70, 229, 0.08);
-                    --gradient-end: rgba(99, 102, 241, 0.04);
                 }
                 * { box-sizing: border-box; }
                 body { 
-                    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-primary) 100%);
-                    background-attachment: fixed;
+                    background-color: var(--bg-primary);
                     color: var(--text-primary); 
                     transition: background-color 0.3s ease, color 0.3s ease;
-                    position: relative;
                 }
-                body::before {
-                    content: '';
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: 
-                        radial-gradient(circle at 20% 50%, var(--gradient-start) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, var(--gradient-end) 0%, transparent 50%);
-                    pointer-events: none;
-                    z-index: 0;
-                }
-                #root { position: relative; z-index: 1; }
                 .app-main { padding: 2rem 1.5rem; flex-grow: 1; }
                 .dashboard-container { max-width: 1400px; margin: auto; }
                 .app-header { 
-                    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(30, 41, 59, 0.95) 100%);
-                    backdrop-filter: blur(10px);
+                    background-color: var(--bg-secondary);
                     padding: 1.25rem 2rem; 
                     border-bottom: 1px solid var(--border-color); 
                     display: flex; 
@@ -445,60 +420,49 @@ const App = () => {
                     flex-wrap: wrap; 
                     gap: 1rem; 
                     transition: all 0.3s ease;
-                    box-shadow: 0 1px 3px var(--shadow);
                     position: sticky;
                     top: 0;
                     z-index: 100;
                 }
                 .logo-container { display: flex; align-items: center; gap: 0.875rem; }
-                .logo-container svg { filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3)); }
                 .logo-container h1 { 
                     font-size: 1.5rem; 
-                    font-weight: 700;
-                    background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
+                    font-weight: 600;
+                    color: var(--text-primary);
                     margin: 0; 
-                    transition: all 0.3s ease;
-                    letter-spacing: -0.02em;
+                    transition: color 0.3s ease;
                 }
                 .app-footer { 
                     text-align: center; 
                     padding: 2rem 1.5rem; 
                     font-size: 0.875rem; 
                     color: var(--text-tertiary); 
-                    background: linear-gradient(180deg, transparent 0%, var(--bg-primary) 100%);
+                    background-color: var(--bg-primary);
                     margin-top: auto; 
                     transition: all 0.3s ease;
                 }
                 .header-controls { display: flex; align-items: center; gap: 1rem; }
                 .theme-toggle { 
-                    background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-hover) 100%);
+                    background-color: var(--bg-tertiary);
                     border: 1px solid var(--border-color); 
                     color: var(--text-secondary); 
                     padding: 0.625rem; 
-                    border-radius: 0.625rem; 
+                    border-radius: 0.5rem; 
                     cursor: pointer; 
                     display: flex; 
                     align-items: center; 
                     justify-content: center; 
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    box-shadow: 0 2px 4px var(--shadow);
+                    transition: all 0.2s ease;
                 }
                 .theme-toggle:hover { 
-                    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+                    background-color: var(--accent);
                     color: #fff;
-                    transform: translateY(-2px) scale(1.05); 
-                    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
                 }
-                .theme-toggle:active { transform: translateY(0) scale(1); }
                 .toggle-switch { 
                     display: flex; 
-                    background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-hover) 100%);
+                    background-color: var(--bg-tertiary);
                     border-radius: 999px; 
                     padding: 4px; 
-                    box-shadow: inset 0 2px 4px var(--shadow);
                 }
                 .toggle-switch button { 
                     font-size: 0.875rem; 
@@ -509,13 +473,11 @@ const App = () => {
                     color: var(--text-secondary); 
                     border-radius: 999px; 
                     cursor: pointer; 
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    position: relative;
+                    transition: all 0.2s ease;
                 }
                 .toggle-switch button.active { 
-                    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+                    background-color: var(--accent);
                     color: #fff;
-                    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
                 }
                 .toggle-switch button:not(.active):hover {
                     color: var(--text-primary);
@@ -524,147 +486,101 @@ const App = () => {
                     display: grid; 
                     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
                     gap: 1.5rem; 
-                    margin-bottom: 2.5rem; 
+                    margin-bottom: 2rem; 
                 }
                 .kpi-card { 
-                    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(30, 41, 59, 0.8) 100%);
-                    backdrop-filter: blur(10px);
-                    padding: 1.75rem; 
-                    border-radius: 1rem; 
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    background-color: var(--bg-secondary);
+                    padding: 1.5rem; 
+                    border-radius: 0.75rem; 
+                    transition: all 0.2s ease;
                     border: 1px solid var(--border-color);
-                    box-shadow: 0 4px 6px var(--shadow);
-                    position: relative;
-                    overflow: hidden;
-                }
-                .kpi-card::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 3px;
-                    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
-                    opacity: 0;
-                    transition: opacity 0.3s ease;
-                }
-                .kpi-card:hover::before {
-                    opacity: 1;
+                    box-shadow: 0 2px 4px var(--shadow);
                 }
                 .kpi-card:hover { 
-                    transform: translateY(-6px); 
-                    box-shadow: 0 12px 24px var(--shadow-hover);
-                    border-color: var(--accent);
+                    transform: translateY(-2px); 
+                    box-shadow: 0 4px 12px var(--shadow);
                 }
                 .kpi-card h3 { 
-                    margin: 0 0 0.75rem 0; 
+                    margin: 0 0 0.5rem 0; 
                     font-size: 0.875rem; 
                     color: var(--text-secondary); 
-                    font-weight: 600; 
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
+                    font-weight: 500; 
                     transition: color 0.3s ease; 
                 }
                 .kpi-card p { 
                     margin: 0; 
-                    font-size: 2.5rem; 
+                    font-size: 2.25rem; 
                     font-weight: 700; 
                     color: var(--text-primary); 
                     transition: color 0.3s ease;
-                    line-height: 1.2;
                 }
                 .chart-grid { 
                     display: grid; 
-                    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); 
-                    gap: 1.75rem; 
+                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+                    gap: 1.5rem; 
                 }
                 .chart-card { 
-                    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(30, 41, 59, 0.8) 100%);
-                    backdrop-filter: blur(10px);
-                    padding: 1.75rem; 
-                    border-radius: 1rem; 
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    background-color: var(--bg-secondary);
+                    padding: 1.5rem; 
+                    border-radius: 0.75rem; 
+                    transition: all 0.2s ease;
                     border: 1px solid var(--border-color);
-                    box-shadow: 0 4px 6px var(--shadow);
-                    position: relative;
-                    overflow: hidden;
-                }
-                .chart-card::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 3px;
-                    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
-                    opacity: 0;
-                    transition: opacity 0.3s ease;
-                }
-                .chart-card:hover::before {
-                    opacity: 1;
+                    box-shadow: 0 2px 4px var(--shadow);
                 }
                 .chart-card:hover { 
-                    transform: translateY(-6px); 
-                    box-shadow: 0 12px 24px var(--shadow-hover);
-                    border-color: var(--accent);
+                    transform: translateY(-2px); 
+                    box-shadow: 0 4px 12px var(--shadow);
                 }
                 .chart-card h3 { 
-                    margin: 0 0 1.75rem 0; 
+                    margin: 0 0 1.5rem 0; 
                     font-size: 1.25rem; 
-                    font-weight: 700; 
+                    font-weight: 600; 
                     color: var(--text-primary); 
                     transition: color 0.3s ease;
-                    letter-spacing: -0.01em;
                 }
                 .no-data { 
                     text-align: center; 
-                    padding: 4rem 2rem; 
+                    padding: 3rem 2rem; 
                     color: var(--text-secondary); 
                     font-size: 1.125rem; 
                     grid-column: 1 / -1;
-                    opacity: 0.7;
                 }
                 .filters-wrapper { margin-bottom: 2rem; }
                 .filter-toggle { 
                     display: flex; 
                     align-items: center; 
-                    gap: 0.625rem; 
-                    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-hover) 100%);
+                    gap: 0.5rem; 
+                    background-color: var(--bg-secondary);
                     color: var(--text-secondary); 
                     border: 1px solid var(--border-color); 
                     padding: 0.75rem 1.25rem; 
-                    border-radius: 0.75rem; 
+                    border-radius: 0.5rem; 
                     font-size: 0.875rem; 
                     font-weight: 600; 
                     cursor: pointer; 
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    box-shadow: 0 2px 4px var(--shadow);
+                    transition: all 0.2s ease;
                 }
                 .filter-toggle:hover { 
-                    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+                    background-color: var(--accent);
                     color: #fff;
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
                 }
                 .filters-container { 
                     display: flex; 
                     flex-wrap: wrap; 
-                    gap: 1.75rem; 
-                    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(30, 41, 59, 0.95) 100%);
-                    backdrop-filter: blur(10px);
-                    border-radius: 1rem; 
+                    gap: 1.5rem; 
+                    background-color: var(--bg-secondary);
+                    border-radius: 0.75rem; 
                     max-height: 0; 
                     overflow: hidden; 
-                    padding: 0 1.75rem; 
+                    padding: 0 1.5rem; 
                     margin-top: 0; 
                     opacity: 0; 
                     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
                     border: 1px solid transparent;
-                    box-shadow: 0 4px 6px var(--shadow);
                 }
                 .filters-container.open { 
                     max-height: 600px; 
-                    padding: 1.75rem; 
+                    padding: 1.5rem; 
                     margin-top: 1rem; 
                     opacity: 1; 
                     border-color: var(--border-color);
@@ -674,15 +590,14 @@ const App = () => {
                     display: flex; 
                     justify-content: space-between; 
                     align-items: center; 
-                    margin-bottom: 1rem; 
+                    margin-bottom: 0.75rem; 
                 }
                 .filter-group h4 { 
                     margin: 0; 
                     font-size: 1rem; 
-                    font-weight: 700;
+                    font-weight: 600;
                     color: var(--text-primary); 
                     transition: color 0.3s ease;
-                    letter-spacing: -0.01em;
                 }
                 .filter-group-actions button { 
                     background: none; 
@@ -691,18 +606,18 @@ const App = () => {
                     font-size: 0.75rem; 
                     font-weight: 600;
                     cursor: pointer; 
-                    padding: 0.375rem 0.625rem; 
-                    border-radius: 0.375rem;
+                    padding: 0.25rem 0.5rem; 
+                    border-radius: 0.25rem;
                     transition: all 0.2s ease;
                 }
                 .filter-group-actions button:hover { 
                     color: var(--accent);
-                    background: var(--bg-tertiary);
+                    background-color: var(--bg-tertiary);
                 }
                 .filter-options { 
                     display: flex; 
                     flex-wrap: wrap; 
-                    gap: 0.875rem; 
+                    gap: 0.75rem; 
                     max-height: 150px; 
                     overflow-y: auto; 
                     padding-right: 0.5rem;
@@ -713,40 +628,36 @@ const App = () => {
                     cursor: pointer; 
                     font-size: 0.875rem; 
                     color: var(--text-secondary); 
-                    transition: all 0.2s ease;
-                    padding: 0.25rem;
-                    border-radius: 0.375rem;
+                    transition: color 0.2s ease;
                 }
                 .filter-checkbox:hover {
                     color: var(--text-primary);
-                    background: var(--bg-tertiary);
                 }
                 .filter-checkbox input { display: none; }
-                .filter-checkbox span { position: relative; padding-left: 28px; }
+                .filter-checkbox span { position: relative; padding-left: 24px; }
                 .filter-checkbox span::before { 
                     content: ''; 
                     position: absolute; 
                     left: 0; 
                     top: 2px; 
-                    width: 18px; 
-                    height: 18px; 
+                    width: 16px; 
+                    height: 16px; 
                     background-color: var(--bg-tertiary); 
-                    border: 2px solid var(--border-hover); 
-                    border-radius: 0.375rem; 
-                    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                    border: 1px solid var(--border-hover); 
+                    border-radius: 4px; 
+                    transition: all 0.2s ease;
                 }
                 .filter-checkbox input:checked + span::before { 
-                    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+                    background-color: var(--accent);
                     border-color: var(--accent);
-                    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
                 }
                 .filter-checkbox span::after { 
                     content: '✓'; 
                     position: absolute; 
-                    left: 4px; 
-                    top: 0px; 
+                    left: 3px; 
+                    top: 1px; 
                     color: #fff; 
-                    font-weight: 700;
+                    font-weight: 600;
                     font-size: 12px;
                     opacity: 0; 
                     transition: opacity 0.2s ease;
