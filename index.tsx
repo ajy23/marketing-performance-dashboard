@@ -775,7 +775,7 @@ const CMODashboard = ({ data, colors, theme }) => {
                                     backgroundColor: [colors.NewCustomer, colors.ReturningCustomer],
                                 }]
                             }}
-                            options={{...chartOptions, scales: {}, plugins: { legend: { display: false } } }} />
+                            options={{...chartOptions, scales: {}, plugins: { legend: { display: true, labels: { color: textColor } } } }} />
                     </div>
                 </div>
                  <div className="chart-card">
