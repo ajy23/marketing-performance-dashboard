@@ -849,10 +849,10 @@ const CFODashboard = ({ data, colors, theme }) => {
     return (
         <div>
             <div className="kpi-grid">
-                <div className="kpi-card"><h3>Total Spend</h3><p>{formatCurrency(financeTotals.Actual_Spend)}</p></div>
                 <div className="kpi-card"><h3>Blended ROAS</h3><p>{formatRatio(blendedROAS)}x</p></div>
                 <div className="kpi-card"><h3>CAC</h3><p>{formatCurrency(cac)}</p></div>
                 <div className="kpi-card"><h3>Marketing Profit</h3><p>{formatCurrency(marketingProfit)}</p></div>
+                <div className="kpi-card"><h3>Total Spend</h3><p>{formatCurrency(financeTotals.Actual_Spend)}</p></div>
             </div>
             <div className="chart-grid">
                 <div className="chart-card" style={{gridColumn: '1 / -1'}}>
