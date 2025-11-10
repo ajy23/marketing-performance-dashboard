@@ -1,6 +1,15 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 
+// Register Chart.js DataLabels plugin if available on window (from CDN)
+if (typeof window !== 'undefined') {
+    const w: any = window as any;
+    if (w.Chart && w.ChartDataLabels && !w.__datalabels_registered) {
+        w.Chart.register(w.ChartDataLabels);
+        w.__datalabels_registered = true;
+    }
+}
+
 const financeCSV = `Month,Marketing_Budget,Actual_Spend,Total_Revenue,Gross_Margin
 2025-10-01,85000,81500,250000,105000
 2025-09-01,75000,68000,180000,65000
@@ -737,9 +746,6 @@ const CMODashboard = ({ data, colors, theme }) => {
                 <div className="chart-card" style={{gridColumn: '1 / -1'}}>
                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
                         <h3>Revenue by Channel</h3>
-                        <div style={{fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)'}}>
-                            {formatCurrency(overallTotals.Revenue)}
-                        </div>
                     </div>
                     <div style={{height: '350px'}}>
                         <Chart type="bar"
@@ -751,7 +757,19 @@ const CMODashboard = ({ data, colors, theme }) => {
                                     backgroundColor: sortedByRevenue.map(c => colors[c.channel]),
                                 }]
                             }}
-                            options={{...chartOptions, indexAxis: 'y', plugins: { legend: { display: false } } }} />
+                            options={{
+                                ...chartOptions,
+                                indexAxis: 'y',
+                                plugins: {
+                                    legend: { display: false },
+                                    datalabels: {
+                                        anchor: 'end',
+                                        align: 'end',
+                                        color: textColor,
+                                        formatter: (value: number) => formatCurrency(value),
+                                    },
+                                },
+                            }} />
                     </div>
                 </div>
                 <div className="chart-card">
