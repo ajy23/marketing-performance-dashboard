@@ -6,6 +6,10 @@ if (typeof window !== 'undefined') {
     const w: any = window as any;
     if (w.Chart && w.ChartDataLabels && !w.__datalabels_registered) {
         w.Chart.register(w.ChartDataLabels);
+        // Turn off datalabels globally; we'll enable per-chart as needed
+        if (w.Chart.defaults?.plugins) {
+            w.Chart.defaults.plugins.datalabels = { ...(w.Chart.defaults.plugins.datalabels || {}), display: false };
+        }
         w.__datalabels_registered = true;
     }
 }
@@ -763,6 +767,7 @@ const CMODashboard = ({ data, colors, theme }) => {
                                 plugins: {
                                     legend: { display: false },
                                     datalabels: {
+                                        display: true,
                                         anchor: 'end',
                                         align: 'end',
                                         color: textColor,
@@ -798,7 +803,7 @@ const CMODashboard = ({ data, colors, theme }) => {
                                     backgroundColor: [colors.NewCustomer, colors.ReturningCustomer],
                                 }]
                             }}
-                            options={{...chartOptions, scales: {}, plugins: { legend: { display: true, labels: { color: textColor } } } }} />
+                            options={{...chartOptions, scales: {}, plugins: { legend: { display: true, labels: { color: textColor } }, datalabels: { display: false } } }} />
                     </div>
                 </div>
                  <div className="chart-card">
@@ -813,7 +818,11 @@ const CMODashboard = ({ data, colors, theme }) => {
                                     backgroundColor: sortedByCTR.map(c => colors[c.channel]),
                                 }]
                             }}
-                            options={{...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: formatPercentage } } }, plugins: { legend: { display: false } } }} />
+                            options={{
+                                ...chartOptions,
+                                scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: formatPercentage } } },
+                                plugins: { legend: { display: false }, datalabels: { display: false } }
+                            }} />
                     </div>
                 </div>
                 <div className="chart-card">
